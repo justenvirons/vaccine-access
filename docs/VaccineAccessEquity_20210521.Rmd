@@ -1,0 +1,41 @@
+---
+title: "Exploring the Equitable Access to Vaccine Providers"
+author: "C. Scott Smith"
+date: "5/21/2021"
+output: pdf_document
+---
+
+```{r package-setup}
+# devtools::install_github("hrbrmstr/nominatim")
+library(opentripplanner)
+library(tibble)
+library(dplyr)
+library(tidygeocoder)
+library(sf)
+library(sp)
+library(arcgisbinding)
+library(ggmap)
+library(data.table)
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Background
+CCDPH and other local health providers across the country are seeking ways to increase COVID-19 vaccine coverage throughout their jurisdictions and plan ahead for broader vaccine eligibility and boosters later this summer and/or fall. It has become increasingly clear that encouraging people to vaccinate will require both identifying and overcoming a wide range of potential barriers that influence both the supply of and demand for COVID-19 vaccine. This brief report aims to assess variations in transportation- or  access-related barriers to vaccination opportunities across CCDPH communities and evaluate the extent to which these barriers may  influence coverage rates. 
+
+The report provides a brief account of the distribution of COVID-19 vaccine providers and on-hand vaccine inventory across the four CCDPH districts and with special attention paid to the 32 priority communities which have experienced relatively high levels of COVID-19 burden throughout the pandemic. The  
+
+# Part I. CCDPH COVID-19 vaccine providers
+We begin by mapping the distribution of COVID-19 vaccine providers. The epidemiological unit at CCDPH has developed and regularly maintains a master list of COVID-19 vaccine providers that operate within the department's jurisdiction. The master list is informed by the department’s own curated partner list as well as reports that are regularly downloaded from the three vaccine tracking platforms, namely: I-CARE, VaccineFinder and VTrckS. Each of the downloaded reports provides a window into one or more facets of the CCDPH vaccine distribution program such that, when examined collectively, offer a novel window into the flow of vaccines throughout CCDPH's jurisdiction. The latest version of the master list (produced 5/21/2021), includes information on over 500 providers operating  within 120 municipalities across four CCDPH districts (which excludes Chicago, Evanston, Oak Park, Skokie, and Stickney Township).
+
+# Community population characteristics
+Since the beginning of the pandemic over one year ago, demographic characteristics including age, race and relative prevalence of comorbidities have contributed to the overall COVID-19 burden experienced by communities. The recent pandemic provides yet another stark reminder that public health opportunity and performance are not distributed evenly within Chicago and throughout suburban Cook County.
+
+```{r population}
+
+
+```
+
+

@@ -1,3 +1,7 @@
+# Shapefiles
+/layers/*
+/otp/*
+
 # History files
 .Rhistory
 .Rapp.history

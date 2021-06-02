@@ -1,0 +1,104 @@
+---
+title: "VaccineAccessEquity"
+author: "C. Scott Smith, PhD AICP"
+date: "5/14/2021"
+output: pdf_document
+---
+
+```{r package-setup}
+# devtools::install_github("hrbrmstr/nominatim")
+library(opentripplanner)
+library(RcppSimdJson)
+library(tibble)
+library(dplyr)
+library(tidygeocoder)
+library(sf)
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r otp-setup}
+
+# https://docs.ropensci.org/opentripplanner/articles/prerequisites.html
+# https://cran.r-project.org/web/packages/opentripplanner/vignettes/opentripplanner.html
+# https://github.com/ropensci/opentripplanner
+# https://nominatim.org/release-docs/develop/admin/Installation/
+# https://cran.r-project.org/web/packages/tidygeocoder/vignettes/tidygeocoder.html
+
+# https://docs.ropensci.org/opentripplanner/articles/opentripplanner.html
+
+# log_buildgraph_ccdph <- otp_build_graph(otp=path_otp, dir=path_data, router = "ccdph")
+
+routingOptions <- otp_routing_options()
+
+address_single <- tibble(singlelineaddress = c(
+  "11 Wall St, NY, NY",
+  "600 Peachtree Street NE, Atlanta, Georgia"
+))
+
+osm_s1 <- geo(
+  address = address_single$singlelineaddress, 
+  method = "census",
+  lat = latitude, 
+  long = longitude
+)
+
+path_data <- file.path(paste0("../otp"))
+path_otp <- otp_dl_jar(path_data, cache = TRUE)
+
+log_setup_ccdph <- otp_setup(otp = path_otp, 
+                             dir = path_data, 
+                             router="ccdph", 
+                             port = 8801, 
+                             securePort = 8802, 
+                             memory = 10240)
+
+otpcon <- otp_connect(timezone = "America/Chicago", 
+                      port = 9801, 
+                      router="ccdph")
+
+route <- otp_plan(otpcon, 
+                  # mode=c('WALK', 'TRANSIT'),
+                  mode=c('WALK'),
+                  maxWalkDistance = 810,
+                  numItineraries = 1,
+                  ncores = 3,
+                  arriveBy = FALSE,
+                  get_geometry = FALSE,
+                  fromPlace = c(-87.72720, 41.91454),
+                  toPlace = c(-87.68394, 41.88388),
+                  date_time = as.POSIXct(strptime("2021-5-28 14:14",
+                                                  "%Y-%m-%d %H:%M")))
+
+route <- route %>% st_as_sf()
+plot(route,
+     max.plot = 1)
+
+locations <- osm_geocode("museums in Chicago, IL", limit=10)
+
+locations <- otp_geocode(otpcon,
+                         corners=FALSE,
+                         query="Jackson")
+
+otp_stop()
+```
+
+# Background
+CCDPH and other local health providers seek to increase COVID-19 vaccine coverage throughout their jurisdictions and it has become increasingly clear that encouraging demand for vaccinations and identifying and overcoming logistical challenges related to vaccine access within communities are the most pressing challenges at hand presently as opposed to tracking and allocating the supply of vaccine, generally. 
+
+Overcoming challenges concerning COVID-19 vaccine hesitancy and barriers to access will require a better understanding of the characteristics of communities and their relationships with vaccine providers. This 'active' document provides some foundational information that may help with this understanding and, therefore, assist in strategic public health decisions as society transitions to mature phases of the pandemic which concern broadening COVID-19 vaccination.
+
+Toward this end, the document begins with some background information and recent updates regarding COVID-19 vaccines and the providers administering them throughout the CCDPH jurisdiction. 
+
+# COVID-19 vaccines and providers
+The epidemiological unit at CCDPH has developed a master list of COVID-19 vaccine providers operating within the department's jurisdiction. Over time, now, on...made available...
+
+According to our latest master list, there are 500 providers administering vaccines within the four CCDPH regions.
+
+# Community population characteristics
+Since the beginning of the pandemic over one year ago, demographic characteristics including age, race and relative prevalence of comorbidities have contributed to the overall COVID-19 burden experienced by communities. The recent pandemic is yet another stark reminder that public health opportunity and performance are not distributed evenly within Chicago and throughout suburban Cook County.
+
+
+
